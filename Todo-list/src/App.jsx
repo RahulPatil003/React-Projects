@@ -1,35 +1,37 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import InputContainer from './Components/InputContainer'
+import TodoContainer from './Components/TodoContainer'
 function App() {
-  const [count, setCount] = useState(0)
 
+  const [inputVal, setInputVal] = useState('')
+  const [todos,setTodos] = useState([])
+  function writeTodo(e){
+    setInputVal(e.target.value)
+    // console.log(e.target.value);
+  }
+
+  function addTodo(){
+    if(inputVal!=''){
+      setTodos((prevTodos) => [...prevTodos ,  inputVal])
+      setInputVal('')
+    }
+  }
+  console.log(todos)
+  function deleteTodo(todoIndex){
+    setTodos((prevTodos)=>
+      prevTodos.filter((prevTodos, prevTodosIndex)=>{
+        return prevTodosIndex!=todoIndex; 
+      })
+  );
+  }
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <main className='border-2 border-black w-screen h-screen justify-center items-center bg-blue-100' >
+        <InputContainer inputVal={inputVal} writeTodo={writeTodo} addTodo={addTodo}/>
+       <TodoContainer todos={todos} deleteTodo={deleteTodo}/>
+      </main>
     </>
   )
-}
+} 
 
 export default App
